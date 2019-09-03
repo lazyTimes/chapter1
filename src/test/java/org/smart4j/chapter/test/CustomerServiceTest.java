@@ -1,7 +1,7 @@
-package com.smart4j.chapter.test;
+package org.smart4j.chapter.test;
 
-import com.smart4j.chapter.model.Customer;
-import com.smart4j.chapter.service.CustomerService;
+import org.smart4j.chapter.model.Customer;
+import org.smart4j.chapter.service.CustomerService;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -47,15 +47,26 @@ public class CustomerServiceTest {
         filed.put("name", "123");
         filed.put("contact", "jack");
         filed.put("telephone", "1394456789");
-        customerService.createCustomer(filed);
+        boolean customer = customerService.createCustomer(filed);
+        Assert.assertTrue(customer);
+
     }
 
     @Test
     public void editCustomer() {
+        int id = 1;
+        Map<String, Object> filed = new HashMap<String, Object>();
+        filed.put("name", "123666asdsad");
+        boolean editCustomer = customerService.editCustomer(id, filed);
+        Assert.assertTrue(editCustomer);
+
     }
 
     @Test
     public void deleteCustomer() {
+        int id = 1;
+        boolean result = customerService.deleteCustomer(id);
+        Assert.assertTrue(result);
     }
 
 }

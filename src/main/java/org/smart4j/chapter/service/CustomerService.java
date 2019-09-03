@@ -1,6 +1,6 @@
-package com.smart4j.chapter.service;
+package org.smart4j.chapter.service;
 
-import com.smart4j.chapter.model.Customer;
+import org.smart4j.chapter.model.Customer;
 
 import java.util.List;
 import java.util.Map;

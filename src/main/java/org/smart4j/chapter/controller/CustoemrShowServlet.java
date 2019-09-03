@@ -1,4 +1,4 @@
-package com.smart4j.chapter.controller;
+package org.smart4j.chapter.controller;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;

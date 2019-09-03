@@ -1,4 +1,4 @@
-package com.smart4j.chapter.model;
+package org.smart4j.chapter.model;
 
 /**
  * 自定义客户表
