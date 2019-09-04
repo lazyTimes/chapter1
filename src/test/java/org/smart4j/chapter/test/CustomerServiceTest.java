@@ -13,13 +13,14 @@ import java.util.Map;
 /**
  * 单元测试
  */
+
 public class CustomerServiceTest {
 
     private final CustomerService customerService;
 
 
-    public CustomerServiceTest(CustomerService customerService) {
-        this.customerService = customerService;
+    public CustomerServiceTest() {
+        this.customerService = new CustomerService();
     }
 
     @Before
@@ -31,7 +32,7 @@ public class CustomerServiceTest {
     @Test
     public void getCustomerList() {
         List<Customer> customerList = customerService.getCustomerList(null);
-        Assert.assertEquals(2, customerList.size());
+        Assert.assertEquals(3, customerList.size());
     }
 
     @Test
