@@ -9,7 +9,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -86,7 +85,8 @@ public class DatabaseHelper {
         Connection connection = CONNECTION_THREAD_LOCAL.get();
         if (connection == null) {
             try {
-                connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+                // 改写为数据库连接池获取连接
+                connection = DATA_SOURCE.getConnection();
             } catch (SQLException e) {
                 LOGGER.error("get connection failure", e);
                 throw new RuntimeException(e);
@@ -172,7 +172,7 @@ public class DatabaseHelper {
      * @param sql    查询语句
      * @return
      */
-    private static int executeUpdate(String sql, Object... params) {
+    public static int executeUpdate(String sql, Object... params) {
         int rows = 0;
         Connection connection = getConnection();
         try {
