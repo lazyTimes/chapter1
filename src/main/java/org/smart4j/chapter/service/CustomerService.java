@@ -58,8 +58,7 @@ public class CustomerService {
      * 获取用户
      */
     public Customer getCustomer(int id) {
-        //TODO
-        return null;
+        return DatabaseHelper.queryEntity(Customer.class, "select * from customer where id=?", id);
     }
 
     /**
@@ -69,8 +68,7 @@ public class CustomerService {
      * @return
      */
     public boolean createCustomer(Map<String, Object> filedMap) {
-        //TODO
-        return false;
+        return DatabaseHelper.insertEntity(Customer.class, filedMap);
     }
 
     /**
@@ -80,15 +78,13 @@ public class CustomerService {
      * @param id       主键
      */
     public boolean editCustomer(int id, Map<String, Object> filedMap) {
-        // TODO
-        return false;
+        return DatabaseHelper.updateEntity(Customer.class, id, filedMap);
     }
 
     /**
      * 删除用户
      */
     public boolean deleteCustomer(int id) {
-        //TODO
-        return false;
+        return DatabaseHelper.deleteEntity(Customer.class, id);
     }
 }

@@ -1,5 +1,6 @@
 package org.smart4j.chapter.util;
 
+import org.apache.commons.dbcp2.BasicDataSource;
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.handlers.BeanHandler;
 import org.apache.commons.dbutils.handlers.BeanListHandler;
@@ -25,9 +26,17 @@ public class DatabaseHelper {
     /**
      * dbUtil 工具类
      */
-    private static final QueryRunner QUERY_RUNNER = new QueryRunner();
+    private static final QueryRunner QUERY_RUNNER;
 
-    private static final ThreadLocal<Connection> CONNECTION_THREAD_LOCAL = new ThreadLocal<Connection>();
+    /**
+     * 当前线程
+     */
+    private static final ThreadLocal<Connection> CONNECTION_THREAD_LOCAL;
+    /**
+     * 数据库连接池
+     */
+    private static final BasicDataSource DATA_SOURCE;
+
 
     /**
      * jdbc
@@ -41,18 +50,30 @@ public class DatabaseHelper {
      * 静态初始化获取jdbc的相关内容
      */
     static {
+        CONNECTION_THREAD_LOCAL = new ThreadLocal<Connection>();
+
+        QUERY_RUNNER = new QueryRunner();
+
+
+
         Properties properties = PropsUtil.loadProps("config.properties");
         DRIVER = properties.getProperty("jdbc.driver");
         URL = properties.getProperty("jdbc.url");
         USERNAME = properties.getProperty("jdbc.username");
         PASSWORD = properties.getProperty("jdbc.password");
+        // 使用数据库连接池进行管理
+        DATA_SOURCE = new BasicDataSource();
+        DATA_SOURCE.setDriverClassName(DRIVER);
+        DATA_SOURCE.setUrl(URL);
+        DATA_SOURCE.setUsername(USERNAME);
+        DATA_SOURCE.setPassword(PASSWORD);
 
-        try {
-            Class.forName(DRIVER);
-        } catch (ClassNotFoundException e) {
-            LOGGER.error("CAN NOT LOAD jdbc driver", e);
-            throw new RuntimeException(e);
-        }
+//        try {
+//            Class.forName(DRIVER);
+//        } catch (ClassNotFoundException e) {
+//            LOGGER.error("CAN NOT LOAD jdbc driver", e);
+//            throw new RuntimeException(e);
+//        }
 
     }
 
@@ -151,7 +172,7 @@ public class DatabaseHelper {
      * @param sql    查询语句
      * @return
      */
-    public static int executeUpdate(String sql, Object... params) {
+    private static int executeUpdate(String sql, Object... params) {
         int rows = 0;
         Connection connection = getConnection();
         try {
@@ -176,7 +197,7 @@ public class DatabaseHelper {
             return false;
         }
 
-        String sql = "INSERT INTO" + getTableName(entityClass);
+        String sql = "INSERT INTO " + getTableName(entityClass);
         StringBuilder columns = new StringBuilder("(");
         StringBuilder values = new StringBuilder("(");
         for (String key : filedMap.keySet()) {
@@ -242,7 +263,7 @@ public class DatabaseHelper {
      * @return
      */
     private static <T> String getTableName(Class<T> entityClass) {
-        return entityClass.getSimpleName();
+        return entityClass.getSimpleName().toLowerCase();
     }
 
 

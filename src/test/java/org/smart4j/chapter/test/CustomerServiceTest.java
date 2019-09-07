@@ -39,6 +39,7 @@ public class CustomerServiceTest {
     public void getCustomer() {
         int id = 1;
         Customer customer = customerService.getCustomer(id);
+        System.err.println(customer);
         Assert.assertNotNull(customer);
     }
 
@@ -47,7 +48,7 @@ public class CustomerServiceTest {
         Map<String, Object> filed = new HashMap<String, Object>();
         filed.put("name", "123");
         filed.put("contact", "jack");
-        filed.put("telephone", "1394456789");
+        filed.put("remark", "1394456789");
         boolean customer = customerService.createCustomer(filed);
         Assert.assertTrue(customer);
 
