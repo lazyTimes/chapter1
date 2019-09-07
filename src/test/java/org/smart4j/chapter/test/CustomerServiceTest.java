@@ -1,10 +1,10 @@
 package org.smart4j.chapter.test;
 
-import org.smart4j.chapter.model.Customer;
-import org.smart4j.chapter.service.CustomerService;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.smart4j.chapter.model.Customer;
+import org.smart4j.chapter.service.CustomerService;
 
 import java.util.HashMap;
 import java.util.List;
@@ -32,7 +32,7 @@ public class CustomerServiceTest {
     @Test
     public void getCustomerList() {
         List<Customer> customerList = customerService.getCustomerList(null);
-        Assert.assertEquals(3, customerList.size());
+        Assert.assertEquals(2, customerList.size());
     }
 
     @Test

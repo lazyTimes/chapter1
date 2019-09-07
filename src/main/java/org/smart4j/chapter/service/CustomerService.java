@@ -3,10 +3,9 @@ package org.smart4j.chapter.service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.smart4j.chapter.model.Customer;
+import org.smart4j.chapter.util.DatabaseHelper;
 import org.smart4j.chapter.util.PropsUtil;
 
-import java.sql.*;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -51,34 +50,8 @@ public class CustomerService {
      * @return
      */
     public List<Customer> getCustomerList(String keyword) {
-        Connection connection = null;
-        List<Customer> customerList = new ArrayList<Customer>();
-        try {
-            String sql = "select * from customer";
-            connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            while (resultSet.next()) {
-                Customer customer = new Customer();
-                customer.setId(resultSet.getInt("id"));
-                customer.setContack(resultSet.getString("contact"));
-                customer.setName(resultSet.getString("name"));
-                customer.setEmail(resultSet.getString("email"));
-                customer.setRemark(resultSet.getString("remark"));
-                customerList.add(customer);
-            }
-        } catch (SQLException e) {
-            LOGGER.error("execute sql failure", e);
-        } finally {
-            if (connection != null) {
-                try {
-                    connection.close();
-                } catch (SQLException e) {
-                    LOGGER.error("close connection faulure", e);
-                }
-            }
-        }
-        return customerList;
+        String sql = "select * from customer";
+        return DatabaseHelper.queryEntityList(Customer.class, sql, null);
     }
 
     /**
