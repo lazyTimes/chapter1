@@ -8,6 +8,10 @@ import org.apache.commons.dbutils.handlers.MapListHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -74,6 +78,24 @@ public class DatabaseHelper {
 //            throw new RuntimeException(e);
 //        }
 
+    }
+
+    /**
+     * 执行sql文件
+     * @param filePath
+     */
+    public static void executeFile(String filePath){
+        InputStream resourceAsStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(filePath);
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(resourceAsStream));
+        try {
+            String sql;
+            while ((sql = bufferedReader.readLine()) != null){
+                DatabaseHelper.executeUpdate(sql,null);
+            }
+        } catch (IOException e) {
+            LOGGER.error("execute sql file failure", e);
+            throw new RuntimeException(e);
+        }
     }
 
     /**
